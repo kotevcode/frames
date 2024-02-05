@@ -83,14 +83,13 @@ app.post('/collider-gallery', async (req, res, next) => {
   const { current } = req.query;
   const { buttonIndex } = req.body.untrustedData;
   console.log(req.body);
-  if (buttonIndex === 2 && gallery.length - 1 > current) {
-    const newIndex = Number(current) + 1;
-    res.render('collider-gallery', { image: gallery[newIndex], current: newIndex });
-  } else if (buttonIndex === 1 && current > 0) {
-    const newIndex = Number(current) - 1;
-    res.render('collider-gallery', { image: gallery[newIndex], current: newIndex });
+  let newIndex = current;
+  if (buttonIndex === 2) {
+    newIndex = gallery.length - 1 > current ? Number(current) + 1 : 0;
+  } else if (buttonIndex === 1) {
+    newIndex = current > 0 ? Number(current) - 1 : gallery.length - 1;
   }
-  res.render('collider-gallery', { image: gallery[0], current: 0 });
+  res.render('collider-gallery', { image: gallery[newIndex], current: newIndex });
 });
 
 // 404: catch 404 and forward to error handler
